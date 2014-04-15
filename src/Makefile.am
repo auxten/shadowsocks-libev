@@ -1,10 +1,11 @@
 AM_CFLAGS = -g -O2 -Wall -Werror -Wno-deprecated-declarations -fno-strict-aliasing -std=gnu99 -D_GNU_SOURCE
 AM_CFLAGS += -I$(top_builddir)/libev
 AM_CFLAGS += -I$(top_builddir)/libasyncns
+AM_CFLAGS += -I$(top_builddir)/..
 
 AM_LDFLAGS = -static
 
-SS_COMMON_LIBS = $(top_builddir)/libev/libev.la $(INET_NTOP_LIB)
+SS_COMMON_LIBS = $(top_builddir)/libev/libev.la $(INET_NTOP_LIB) -lz
  
 bin_PROGRAMS = ss-local ss-tunnel
 
@@ -15,7 +16,8 @@ endif
 ss_local_SOURCES = utils.c \
                    jconf.c \
                    json.c \
-				   encrypt.c \
+				   encrypt2.c \
+                   compress.c \
 				   udprelay.c \
 				   cache.c \
 				   local.c
@@ -23,7 +25,7 @@ ss_local_SOURCES = utils.c \
 ss_tunnel_SOURCES = utils.c \
 					jconf.c \
 					json.c \
-					encrypt.c \
+                    encrypt.c \
 					udprelay.c \
 					cache.c \
 					tunnel.c
@@ -31,7 +33,8 @@ ss_tunnel_SOURCES = utils.c \
 ss_server_SOURCES = utils.c \
                     jconf.c \
                     json.c \
-                    encrypt.c \
+                    encrypt2.c \
+                    compress.c \
 					udprelay.c \
 					cache.c \
                     server.c
@@ -55,7 +58,8 @@ bin_PROGRAMS += ss-redir
 ss_redir_SOURCES = utils.c \
                    jconf.c \
                    json.c \
-                   encrypt.c \
+                    encrypt2.c \
+                    compress.c \
                    redir.c
 ss_redir_LDADD = $(SS_COMMON_LIBS)
 endif
